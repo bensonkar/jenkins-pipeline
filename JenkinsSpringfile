@@ -1,0 +1,22 @@
+pipeline {
+    stage any
+    stages {
+        stage('Buid') {
+            steps {
+                git 'https://github.com/bensonkar/eclectic-movie-service.git'
+                // sh './mvn clean'
+                bat './mvnw clean compile'
+            }
+        }
+        stage('test') {
+            steps {
+                bat './mvnw test'
+            }
+        }
+        post {
+            always {
+                junit '**/target/surefire-reports/TEST-*.xml'
+            }
+        }
+    }
+}
